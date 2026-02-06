@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+    --primary: #facc15;
+    --dark: #18181b;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.font-brand {
+    font-family: 'Oswald', sans-serif;
+}
+
+/* BANNER COM EFEITO DE REVELAÇÃO LETRA POR LETRA */
+.delivery-banner {
+    position: relative;
+    overflow: hidden;
+    background-color: #facc15;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.animation-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.delivery-text-container {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    color: black;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right, black var(--progress, 0%), transparent var(--progress, 0%));
+    -webkit-mask-image: linear-gradient(to right, black var(--progress, 0%), transparent var(--progress, 0%));
+    animation: reveal-progress 6s linear infinite;
+}
+
+.truck-icon {
+    position: absolute;
+    left: 0;
+    font-size: 20px;
+    z-index: 10;
+    transform: translateX(-50%) rotate(-90deg);
+    animation: truck-progress 6s linear infinite, chomp 0.5s infinite;
+    pointer-events: none;
+    display: inline-block;
+}
+
+@keyframes reveal-progress {
+    0%, 10% { --progress: 0%; }
+    80%, 100% { --progress: 100%; }
+}
+
+@keyframes truck-progress {
+    0%, 10% { left: 0%; opacity: 0; }
+    11% { opacity: 1; }
+    80% { left: 100%; opacity: 1; }
+    81%, 100% { left: 100%; opacity: 0; }
+}
+
+@keyframes chomp {
+    0% { transform: translateX(-50%) rotate(-90deg) scale(1); }
+    50% { transform: translateX(-50%) rotate(-90deg) scale(1.2); }
+    100% { transform: translateX(-50%) rotate(-90deg) scale(1); }
+}
+
+@property --progress {
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: false;
+}
+
+@media (min-width: 640px) {
+    .delivery-text-container { font-size: 13px; }
+    .delivery-banner { height: 42px; }
+}
+
+/* Customizações de UI */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.product-card { transition: all 0.3s ease; }
+#cart-sidebar { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none; margin: 0;
+}

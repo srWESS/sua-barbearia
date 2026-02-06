@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Barbearia - Sua Barbearia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+    <!-- Banner Animado de Entrega -->
+    <div class="delivery-banner sticky top-0 z-[60] shadow-md">
+        <div class="animation-wrapper">
+            <span class="truck-icon">✂️</span>
+            <div class="delivery-text-container">
+                ✂️ Agendamento rápido em minutos!
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegação Principal -->
+    <nav class="bg-zinc-900 shadow-xl sticky top-[36px] sm:top-[42px] z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                <div class="bg-yellow-400 p-1.5 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l.707.707A1 1 0 0012.414 11H13a4 4 0 014 4v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1a4 4 0 014-4h.586a1 1 0 00.707-.293l.707-.707A1 1 0 019 10zM3 3a1 1 0 011-1h6a1 1 0 011 1v1a1 1 0 01-1 1H5a1 1 0 01-1-1V3zM3 9a1 1 0 011-1h6a1 1 0 011 1v1a1 1 0 01-1 1H5a1 1 0 01-1-1V9z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl sm:text-2xl font-brand font-bold text-white uppercase italic tracking-tighter">
+                    Sua <span class="text-yellow-400">Barbearia</span>
+                </h1>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <!-- Menu Hambúrguer para Mobile -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <button onclick="showScheduleModal()" class="p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </button>
+
+                <button onclick="toggleCart()" class="relative p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-zinc-900">0</span>
+                </button>
+
+                <!-- Botão de Idioma -->
+                <button onclick="setLanguage(currentLanguage === 'pt' ? 'en' : 'pt')" class="p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
+                    <span id="lang-text" class="text-yellow-400 font-bold text-sm">PT</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Desktop -->
+        <div class="bg-zinc-800 border-t border-zinc-700 hidden md:block">
+            <div class="container mx-auto">
+                <div class="flex px-4 py-3 gap-6 justify-center text-xs font-bold text-gray-400 uppercase">
+                    <button onclick="filterCategory('todos')" class="hover:text-yellow-400 transition">Todos</button>
+                    <button onclick="filterCategory('cortes')" class="hover:text-yellow-400 transition">Cortes</button>
+                    <button onclick="filterCategory('barba')" class="hover:text-yellow-400 transition">Barba</button>
+                    <button onclick="filterCategory('produtos')" class="hover:text-yellow-400 transition">Produtos</button>
+                    <button onclick="filterCategory('combos')" class="hover:text-yellow-400 transition">Combos</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menu Mobile Sidebar -->
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-full sm:max-w-sm bg-zinc-900 shadow-2xl transform -translate-x-full z-[70] flex flex-col md:hidden">
+        <div class="p-5 bg-zinc-900 text-white flex justify-between items-center border-b border-zinc-700">
+            <h3 class="font-brand font-bold uppercase">Categorias</h3>
+            <button onclick="toggleMobileMenu()" class="text-yellow-400 font-bold uppercase text-xs">Fechar</button>
+        </div>
+        <div class="flex-grow overflow-y-auto p-4 space-y-4 bg-zinc-800">
+            <button onclick="filterCategory('todos'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Todos</button>
+            <button onclick="filterCategory('cortes'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Cortes</button>
+            <button onclick="filterCategory('barba'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Barba</button>
+            <button onclick="filterCategory('produtos'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Produtos</button>
+            <button onclick="filterCategory('combos'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Combos</button>
+        </div>
+    </div>
+
+    <div id="mobile-menu-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 hidden z-[65] backdrop-blur-sm md:hidden"></div>
+
+    <!-- Hero Section -->
+    <header class="bg-zinc-900 pt-6 pb-12 sm:py-16 relative overflow-hidden">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl sm:text-5xl font-brand font-bold mb-6 text-white leading-tight uppercase">
+                Cortes <span class="text-yellow-400">Perfeitos</span> <br> & Estilo Impecável!
+            </h2>
+            <div class="relative max-w-xl mx-auto">
+                <input type="text" id="search-input" onkeyup="searchProducts()" placeholder="O que você procura?"
+                    class="w-full bg-zinc-800 border-none rounded-2xl px-6 py-4 text-white focus:ring-2 focus:ring-yellow-400 outline-none">
+            </div>
+        </div>
+    </header>
+
+    <!-- Listagem -->
+    <main class="container mx-auto px-4 py-8">
+        <h3 id="category-title" class="text-xl font-brand font-bold uppercase mb-8 border-l-4 border-yellow-400 pl-4">Destaques</h3>
+        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <!-- JS -->
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-zinc-950 text-gray-600 py-10 border-t border-zinc-900">
+        <div class="container mx-auto px-4">
+        <div class="text-center mb-6">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                <div class="bg-yellow-400 p-1.5 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl sm:text-2xl font-brand font-bold text-white uppercase italic tracking-tighter">
+                    Sua <span class="text-yellow-400">Barbearia</span>
+                </h1>
+            </div>
+        </div>
+            <div class="text-center mb-12">
+                <h3 class="text-white font-bold mb-4 uppercase">Contato</h3>
+                <div class="flex gap-4 justify-center">
+                    <a href="https://wa.me/5511991854713?text=Ol%C3%A1%2C%20gostaria%20de%20adquirir%20a%20loja%20virtual." target="_blank" class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-bold hover:bg-yellow-300 transition">WhatsApp</a>
+                    <a href="https://maps.google.com/?q/Rua+Exemplo+123+São+Paulo" target="_blank" class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-bold hover:bg-yellow-300 transition">Localização</a>
+                    <a href="https://www.instagram.com/owess.92?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-bold hover:bg-yellow-300 transition">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Rodapé de Copyright -->
+    <footer class="bg-white text-gray-600 py-6 border-t border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <p class="text-black">&copy; 2023 Sua Barbearia. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Carrinho -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full sm:max-w-md bg-white shadow-2xl transform translate-x-full z-[70] flex flex-col">
+        <div class="p-5 bg-zinc-900 text-white flex justify-between items-center">
+            <h3 class="font-brand font-bold uppercase">Meu Carrinho</h3>
+            <button onclick="toggleCart()" class="text-yellow-400 font-bold uppercase text-xs">Fechar</button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-50/50"></div>
+        <div class="p-6 border-t shadow-[0_-10px_20px_rgba(0,0,0,0.05)] bg-white">
+            <div class="flex justify-between mb-6">
+                <span class="font-bold text-gray-400 uppercase text-xs">Total:</span>
+                <span id="cart-total" class="text-2xl font-brand font-bold text-zinc-900">R$ 0,00</span>
+            </div>
+            <button onclick="checkout()" class="w-full bg-yellow-400 py-4 rounded-xl font-bold uppercase hover:bg-yellow-500 shadow-lg active:scale-95 transition-transform">
+                Detalhes da Compra
+            </button>
+        </div>
+    </div>
+
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/60 hidden z-[65] backdrop-blur-sm"></div>
+
+    <!-- Modal de Detalhes do Produto -->
+    <div id="product-modal" class="fixed inset-0 bg-black/60 hidden z-[70] backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="relative">
+                <img id="modal-image" src="" class="w-full h-64 object-cover rounded-t-2xl">
+                <button onclick="closeProductModal()" class="absolute top-4 left-4 bg-black/50 backdrop-blur-md text-white rounded-full p-2 hover:bg-black/70 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button onclick="closeProductModal()" class="absolute top-4 right-4 bg-black/50 backdrop-blur-md text-white rounded-full p-2 hover:bg-black/70 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="p-6">
+                <h3 id="modal-name" class="text-2xl font-brand font-bold text-zinc-900 mb-2"></h3>
+                <p id="modal-description" class="text-gray-600 mb-4"></p>
+                <div class="flex items-center justify-between mb-6">
+                    <span id="modal-price" class="text-3xl font-brand font-bold text-zinc-900"></span>
+                    <span id="modal-category" class="bg-zinc-100 text-zinc-600 px-3 py-1 rounded-full text-sm font-bold uppercase"></span>
+                </div>
+
+                <!-- SELETOR DE QUANTIDADE NO MODAL -->
+                <div class="flex items-center justify-between bg-gray-50 rounded-xl p-1 mb-4 border border-gray-100">
+                    <button onclick="adjustQtyModal(-1)" class="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold text-zinc-900 hover:bg-gray-100 transition-colors">-</button>
+                    <input type="number" id="modal-qty" value="1" min="1" class="w-12 bg-transparent text-center font-bold text-lg outline-none" readonly>
+                    <button onclick="adjustQtyModal(1)" class="w-10 h-10 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold text-zinc-900 hover:bg-gray-100 transition-colors">+</button>
+                </div>
+
+                <button onclick="addToCartFromModal()" class="w-full bg-zinc-900 text-white py-4 rounded-xl font-bold uppercase hover:bg-yellow-400 hover:text-black transition-all active:scale-95 shadow-lg">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Agendamento -->
+    <div id="schedule-modal" class="fixed inset-0 bg-black/60 hidden z-[70] backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-brand font-bold text-zinc-900">Agendar Serviço</h3>
+                    <button onclick="closeScheduleModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="schedule-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Nome Completo *</label>
+                        <input type="text" id="schedule-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Telefone *</label>
+                        <input type="tel" id="schedule-phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Serviço *</label>
+                        <select id="schedule-service" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
+                            <option value="">Selecione...</option>
+                            <option value="Corte Masculino Clássico">Corte Masculino Clássico</option>
+                            <option value="Barba Completa">Barba Completa</option>
+                            <option value="Corte + Barba">Corte + Barba</option>
+                            <option value="Corte Moderno">Corte Moderno</option>
+                            <option value="Bigode">Bigode</option>
+                            <option value="Kit Barbearia Completo">Kit Barbearia Completo</option>
+                            <option value="Corte Militar">Corte Militar</option>
+                            <option value="Sobrancelha">Sobrancelha</option>
+                            <option value="Corte + Sobrancelha">Corte + Sobrancelha</option>
+                            <option value="Barba + Bigode">Barba + Bigode</option>
+                            <option value="Corte Degradê">Corte Degradê</option>
+                            <option value="Kit Higiene Pessoal">Kit Higiene Pessoal</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Data *</label>
+                        <input type="date" id="schedule-date" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Horário *</label>
+                        <select id="schedule-time" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
+                            <option value="">Selecione...</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Observações</label>
+                        <textarea id="schedule-notes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none" placeholder="Instruções especiais..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-zinc-900 text-white py-4 rounded-xl font-bold uppercase hover:bg-yellow-400 hover:text-black transition-all active:scale-95 shadow-lg">Agendar no WhatsApp</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Banner de Consentimento de Cookies -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-gray-900 text-white p-4 shadow-lg z-50 transform translate-y-full transition-transform duration-300">
+        <div class="container mx-auto max-w-4xl">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex-1">
+                    <h3 class="font-bold text-lg mb-2">🍪 Política de Cookies</h3>
+                    <p class="text-sm text-gray-300">Este site usa cookies para melhorar sua experiência. Cookies essenciais são sempre permitidos. Os cookies serão aceitos automaticamente em 5 segundos, ou clique em "Aceitar" agora.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="reject-cookies" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors">Rejeitar</button>
+                    <button id="accept-cookies" class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-black font-bold rounded-lg transition-colors">Aceitar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
