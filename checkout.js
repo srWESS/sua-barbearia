@@ -111,7 +111,14 @@ const checkoutTranslations = {
         paymentLabel: '*Pagamento:*',
         notesLabel: '*Observações:*',
         orderLabel: '*PEDIDO:*',
-        minimumOrderWarning: 'Compre mais R${value} para completar o pedido mínimo.'
+        minimumOrderWarning: 'Compre mais R${value} para completar o pedido mínimo.',
+        schedulingTitle: 'Agendamento de Serviços',
+        schedulingSubtitle: 'Preencha suas informações para agendar seus serviços',
+        schedulingPageTitle: 'Agendamento - Sua Barbearia',
+        mixedTitle: 'Agendamento + Produtos',
+        mixedSubtitle: 'Agende seus serviços e compre produtos',
+        mixedPageTitle: 'Agendamento + Produtos - Sua Barbearia',
+        scheduleWhatsApp: 'Agendar no WhatsApp'
     },
     en: {
         back: 'BACK',
@@ -154,7 +161,14 @@ const checkoutTranslations = {
         paymentLabel: '*Payment:*',
         notesLabel: '*Notes:*',
         orderLabel: '*ORDER:*',
-        minimumOrderWarning: 'Buy R${value} more to complete the minimum order.'
+        minimumOrderWarning: 'Buy R${value} more to complete the minimum order.',
+        schedulingTitle: 'Service Scheduling',
+        schedulingSubtitle: 'Fill in your information to schedule your services',
+        schedulingPageTitle: 'Scheduling - Your Barbershop',
+        mixedTitle: 'Scheduling + Products',
+        mixedSubtitle: 'Schedule services and buy products',
+        mixedPageTitle: 'Scheduling + Products - Your Barbershop',
+        scheduleWhatsApp: 'Schedule on WhatsApp'
     }
 };
 
@@ -274,7 +288,9 @@ function saveFormData() {
         address: document.getElementById('customer-address').value,
         number: document.getElementById('customer-number').value,
         paymentMethod: document.getElementById('payment-method').value,
-        notes: document.getElementById('customer-notes').value
+        notes: document.getElementById('customer-notes').value,
+        serviceDate: document.getElementById('service-date') ? document.getElementById('service-date').value : '',
+        serviceTime: document.getElementById('service-time') ? document.getElementById('service-time').value : ''
     };
     localStorage.setItem('checkoutFormData', JSON.stringify(formData));
 }
@@ -291,6 +307,10 @@ function loadFormData() {
         document.getElementById('customer-number').value = formData.number || '';
         document.getElementById('payment-method').value = formData.paymentMethod || '';
         document.getElementById('customer-notes').value = formData.notes || '';
+        if (document.getElementById('service-date') && formData.serviceDate) 
+            document.getElementById('service-date').value = formData.serviceDate;
+        if (document.getElementById('service-time') && formData.serviceTime) 
+            document.getElementById('service-time').value = formData.serviceTime;
     }
 }
 
@@ -337,8 +357,8 @@ function renderOrderSummary() {
     }
 
     // Separar serviços e produtos
-    const services = cart.filter(item => ['cortes', 'barba', 'combos'].includes(item.category));
-    const products = cart.filter(item => item.category === 'produtos');
+    const services = cart.filter(item => item.type === 'service');
+    const products = cart.filter(item => item.type === 'product');
 
     let summaryHTML = '';
 
@@ -557,8 +577,8 @@ function handleCheckout(event) {
     const notes = document.getElementById('customer-notes').value;
 
     // Separar serviços e produtos
-    const services = cart.filter(item => ['cortes', 'barba', 'combos'].includes(item.category));
-    const products = cart.filter(item => item.category === 'produtos');
+    const services = cart.filter(item => item.type === 'service');
+    const products = cart.filter(item => item.type === 'product');
 
     const isServicesOnly = services.length > 0 && products.length === 0;
     const isProductsOnly = products.length > 0 && services.length === 0;
@@ -572,16 +592,62 @@ function handleCheckout(event) {
 
     let msg = '';
 
-    if (isServicesOnly) {
-        // Apenas agendamento de serviços
-        msg = `*AGENDAMENTO DE SERVIÇOS - SUA BARBEARIA*\n\n` +
-              `*Cliente:* ${name}\n` +
-              `*Telefone:* ${phone}\n\n` +
-              `*SERVIÇOS SOLICITADOS:*\n` +
-              services.map(i => `• ${i.quantity}x ${i.name} - R$ ${(i.price * i.quantity).toFixed(2).replace('.', ',')}`).join('\n') +
-              `\n\n*Total Serviços: R$ ${services.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2).replace('.', ',')}*\n` +
-              (notes ? `\n*Observações:* ${notes}\n\n` : '\n') +
-              `_Por favor, confirme a disponibilidade e agende o melhor horário!_`;
+    // Se houver serviços, usar o novo formato de agendamento
+    if (services.length > 0) {
+        const serviceDate = document.getElementById('service-date')?.value;
+        const serviceTime = document.getElementById('service-time')?.value;
+
+        if (!serviceDate || !serviceTime) {
+            alert('Por favor, selecione a data e o horário do agendamento.');
+            return;
+        }
+
+        // Formatar data para PT-BR
+        const [year, month, day] = serviceDate.split('-');
+        const formattedDate = `${day}/${month}/${year}`;
+
+        msg = `Olá! Gostaria de agendar um serviço:\n\n`;
+        msg += `Nome: ${name}\n`;
+        msg += `Telefone: ${phone}\n`;
+
+        // Listar serviços
+        if (services.length === 1) {
+            msg += `Serviço: ${services[0].name}\n`;
+            msg += `Valor: R$ ${(services[0].price * services[0].quantity).toFixed(2).replace('.', ',')}\n`;
+        } else {
+            msg += `Serviços:\n`;
+            services.forEach(s => {
+                msg += `- ${s.quantity}x ${s.name} (R$ ${(s.price * s.quantity).toFixed(2).replace('.', ',')})\n`;
+            });
+        }
+
+        msg += `Data: ${serviceDate}\n`; // Mantendo formato YYYY-MM-DD conforme pedido
+        msg += `Horário: ${serviceTime}\n`;
+
+        if (products.length > 0) {
+            msg += `*PRODUTOS:*\n`;
+            products.forEach(p => {
+                msg += `* ${p.quantity}x ${p.name} - R$ ${(p.price * p.quantity).toFixed(2).replace('.', ',')}\n`;
+            });
+            msg += `\n`;
+        }
+
+        const servicesTotal = services.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const productsTotal = products.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const total = servicesTotal + productsTotal;
+
+        if (products.length > 0) {
+            msg += `*Subtotal Serviços: R$ ${servicesTotal.toFixed(2).replace('.', ',')}*\n`;
+            msg += `*Subtotal Produtos: R$ ${productsTotal.toFixed(2).replace('.', ',')}*\n`;
+        } else {
+            // Se só tem serviços, não precisa mostrar subtotal, apenas o total
+        }
+
+        msg += `\n\n*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+        
+        if (notes) msg += `Observações: ${notes}\n\n`;
+        
+        msg += `Aguardo confirmação!`;
 
     } else {
         // Vendas (produtos apenas ou mistos)
@@ -690,11 +756,14 @@ document.getElementById('customer-address').addEventListener('input', saveFormDa
 document.getElementById('customer-number').addEventListener('input', saveFormData);
 document.getElementById('payment-method').addEventListener('change', saveFormData);
 document.getElementById('customer-notes').addEventListener('input', saveFormData);
+document.getElementById('service-date').addEventListener('input', saveFormData);
+document.getElementById('service-time').addEventListener('change', saveFormData);
 
 function detectOrderType() {
+    const t = checkoutTranslations[currentLanguage];
     // Separar serviços e produtos
-    const services = cart.filter(item => ['cortes', 'barba', 'combos'].includes(item.category));
-    const products = cart.filter(item => item.category === 'produtos');
+    const services = cart.filter(item => item.type === 'service');
+    const products = cart.filter(item => item.type === 'product');
 
     const isServicesOnly = services.length > 0 && products.length === 0;
     const isProductsOnly = products.length > 0 && services.length === 0;
@@ -705,46 +774,65 @@ function detectOrderType() {
     const subtitleElement = document.getElementById('page-subtitle');
 
     if (isServicesOnly) {
-        titleElement.textContent = 'Agendamento de Serviços';
-        subtitleElement.textContent = 'Preencha suas informações para agendar seus serviços';
-        document.title = 'Agendamento - Sua Barbearia';
+        titleElement.textContent = t.schedulingTitle;
+        subtitleElement.textContent = t.schedulingSubtitle;
+        document.title = t.schedulingPageTitle;
     } else if (isProductsOnly) {
-        titleElement.textContent = 'Detalhes da Compra';
-        subtitleElement.textContent = 'Preencha suas informações para finalizar o pedido';
-        document.title = 'Detalhes da Compra - Sua Barbearia';
+        titleElement.textContent = t.title;
+        subtitleElement.textContent = t.subtitle;
+        document.title = currentLanguage === 'en' ? 'Purchase Details - Your Barbershop' : 'Detalhes da Compra - Sua Barbearia';
     } else if (isMixed) {
-        titleElement.textContent = 'Agendamento + Produtos';
-        subtitleElement.textContent = 'Agende seus serviços e compre produtos';
-        document.title = 'Agendamento + Produtos - Sua Barbearia';
+        titleElement.textContent = t.mixedTitle;
+        subtitleElement.textContent = t.mixedSubtitle;
+        document.title = t.mixedPageTitle;
     }
 
-    // Ocultar campos desnecessários para agendamento apenas
-    const deliveryMethodField = document.querySelector('label[for="delivery-method"]').parentElement;
+    // Elementos do formulário
+    const deliveryMethodSelect = document.getElementById('delivery-method');
+    const deliveryMethodField = deliveryMethodSelect.parentElement;
     const addressFields = document.getElementById('address-fields');
-    const paymentMethodField = document.querySelector('label[for="payment-method"]').parentElement;
+    const paymentMethodField = document.getElementById('payment-method').parentElement;
 
-    if (isServicesOnly) {
-        // Para agendamento apenas, ocultar entrega e pagamento
+    // Se houver serviços (puro ou misto), o cliente vai à loja.
+    if (services.length > 0) {
+        // Forçar retirada e ocultar opções de entrega/endereço
+        deliveryMethodSelect.value = 'retirar';
         deliveryMethodField.style.display = 'none';
         addressFields.style.display = 'none';
-        paymentMethodField.style.display = 'none';
+        
+        // Atualizar resumo para remover frete visualmente se necessário
+        currentShippingCost = 0;
+        renderOrderSummary();
 
-        // Ajustar placeholder das observações
-        const notesTextarea = document.getElementById('customer-notes');
-        notesTextarea.placeholder = 'Preferências de horário, estilo desejado, etc...';
-
-        // Alterar texto do botão
-        const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
-        submitBtn.textContent = 'Agendar no WhatsApp';
+        if (isServicesOnly) {
+            paymentMethodField.style.display = 'none';
+            const notesTextarea = document.getElementById('customer-notes');
+            notesTextarea.placeholder = 'Preferências de horário, estilo desejado, etc...';
+            const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
+            submitBtn.textContent = t.scheduleWhatsApp;
+        } else {
+            paymentMethodField.style.display = 'block';
+            const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
+            submitBtn.textContent = t.finalizeOrder;
+        }
     } else {
-        // Para vendas, mostrar todos os campos
+        // Apenas produtos: mostrar opções de entrega
         deliveryMethodField.style.display = 'block';
         paymentMethodField.style.display = 'block';
         toggleAddressFields(); // Ajustar campos de endereço baseado na seleção atual
+    }
+
+    // Mostrar campos de agendamento sempre que houver serviços
+    const serviceContainer = document.getElementById('service-datetime-container');
+    if (services.length > 0) {
+        if (serviceContainer) serviceContainer.classList.remove('hidden');
+    } else {
+        if (serviceContainer) serviceContainer.classList.add('hidden');
     }
 }
 
 window.onload = function() {
     loadCart();
+    loadFormData();
     detectOrderType();
 };

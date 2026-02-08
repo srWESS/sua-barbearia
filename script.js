@@ -198,26 +198,26 @@ class CookieManager {
 const cookieManager = new CookieManager();
 
 const products = [
-    { id: 1, name: "Corte Masculino Clássico", price: 25.00, category: "cortes", image: "corte-tradicional.png", description: "Corte masculino tradicional com acabamento perfeito. Inclui lavagem e finalização." },
-    { id: 2, name: "Barba Completa", price: 20.00, category: "barba", image: "barba-completa.jpg", description: "Aparação e modelagem da barba com toalha quente e produtos premium." },
-    { id: 3, name: "Corte + Barba", price: 40.00, category: "combos", image: "corte-mais-barba.jpg", description: "Combo completo: corte de cabelo + barba. Melhor preço!" },
-    { id: 4, name: "Shampoo Profissional 250ml", price: 35.00, category: "produtos", image: "shampoo-masculino.jpg", description: "Shampoo profissional para cabelos masculinos. Hidratação intensa." },
-    { id: 5, name: "Óleo para Barba 50ml", price: 28.00, category: "produtos", image: "oleo-para-barba.jpg", description: "Óleo natural para barba. Hidrata e dá brilho aos pelos." },
-    { id: 6, name: "Corte Moderno", price: 30.00, category: "cortes", image: "corte-moderno.jpg", description: "Corte moderno com técnicas atuais. Para quem quer estar na moda." },
-    { id: 7, name: "Bigode", price: 15.00, category: "barba", image: "barba-bigode.jpg", description: "Aparação e modelagem do bigode. Detalhes perfeitos." },
-    { id: 8, name: "Kit Barbearia Completo", price: 120.00, category: "combos", image: "kit-barbearia-completo.jpg", description: "Kit com tesoura, máquina, pentes e produtos. Para profissionais." },
-    { id: 9, name: "Condicionador 250ml", price: 32.00, category: "produtos", image: "consicionador-masculino.jpg", description: "Condicionador premium para cabelos masculinos." },
-    { id: 10, name: "Creme para Barba 100ml", price: 25.00, category: "produtos", image: "creme-para-barba.jpg", description: "Creme hidratante para barba. Previne irritações." },
-    { id: 11, name: "Corte Militar", price: 22.00, category: "cortes", image: "corte-militar.jpg", description: "Corte curto e limpo. Ideal para dias quentes." },
-    { id: 12, name: "Sobrancelha", price: 12.00, category: "barba", image: "sobrancelha.jpg", description: "Aparação das sobrancelhas. Define o olhar." },
-    { id: 13, name: "Gel Fixador 200ml", price: 18.00, category: "produtos", image: "gel-medio.jpg", description: "Gel para fixação forte. Segura o penteado o dia todo." },
-    { id: 14, name: "Máquina de Cortar Cabelo", price: 89.00, category: "produtos", image: "maquina-de-cortar-cabelo.jpg", description: "Máquina profissional para cortes em casa." },
-    { id: 15, name: "Corte + Sobrancelha", price: 35.00, category: "combos", image: "corte-mais-barba.jpg", description: "Corte de cabelo + aparação de sobrancelhas." },
-    { id: 16, name: "Pomada Modeladora 100ml", price: 22.00, category: "produtos", image: "pasta-modeladora.jpg", description: "Pomada para modelar cabelos. Acabamento natural." },
-    { id: 17, name: "Barba + Bigode", price: 25.00, category: "barba", image: "barba-bigode.jpg", description: "Combo barba completa + modelagem do bigode." },
-    { id: 18, name: "Tesoura Profissional", price: 45.00, category: "produtos", image: "tesoura-profissional.jpg", description: "Tesoura de corte profissional. Afiada e precisa." },
-    { id: 19, name: "Corte Degradê", price: 35.00, category: "cortes", image: "corte-moderno.jpg", description: "Corte degradê moderno. Tendência atual." },
-    { id: 20, name: "Kit Higiene Pessoal", price: 55.00, category: "combos", image: "kit-higiene-pessoal.jpg", description: "Kit com shampoo, condicionador e óleo para barba." }
+    { id: 1, name: "Corte Masculino Clássico", price: 25.00, category: "cortes", type: "service", image: "corte-tradicional.png", description: "Corte masculino tradicional com acabamento perfeito. Inclui lavagem e finalização." },
+    { id: 2, name: "Barba Completa", price: 20.00, category: "barba", type: "service", image: "barba-completa.jpg", description: "Aparação e modelagem da barba com toalha quente e produtos premium." },
+    { id: 3, name: "Corte + Barba", price: 40.00, category: "combos", type: "service", image: "corte-mais-barba.jpg", description: "Combo completo: corte de cabelo + barba. Melhor preço!" },
+    { id: 4, name: "Shampoo Profissional 250ml", price: 35.00, category: "produtos", type: "product", image: "shampoo-masculino.jpg", description: "Shampoo profissional para cabelos masculinos. Hidratação intensa." },
+    { id: 5, name: "Óleo para Barba 50ml", price: 28.00, category: "produtos", type: "product", image: "oleo-para-barba.jpg", description: "Óleo natural para barba. Hidrata e dá brilho aos pelos." },
+    { id: 6, name: "Corte Moderno", price: 30.00, category: "cortes", type: "service", image: "corte-moderno.jpg", description: "Corte moderno com técnicas atuais. Para quem quer estar na moda." },
+    { id: 7, name: "Bigode", price: 15.00, category: "barba", type: "service", image: "barba-bigode.jpg", description: "Aparação e modelagem do bigode. Detalhes perfeitos." },
+    { id: 8, name: "Kit Barbearia Completo", price: 120.00, category: "combos", type: "product", image: "kit-barbearia-completo.jpg", description: "Kit com tesoura, máquina, pentes e produtos. Para profissionais." },
+    { id: 9, name: "Condicionador 250ml", price: 32.00, category: "produtos", type: "product", image: "consicionador-masculino.jpg", description: "Condicionador premium para cabelos masculinos." },
+    { id: 10, name: "Creme para Barba 100ml", price: 25.00, category: "produtos", type: "product", image: "creme-para-barba.jpg", description: "Creme hidratante para barba. Previne irritações." },
+    { id: 11, name: "Corte Militar", price: 22.00, category: "cortes", type: "service", image: "corte-militar.jpg", description: "Corte curto e limpo. Ideal para dias quentes." },
+    { id: 12, name: "Sobrancelha", price: 12.00, category: "barba", type: "service", image: "sobrancelha.jpg", description: "Aparação das sobrancelhas. Define o olhar." },
+    { id: 13, name: "Gel Fixador 200ml", price: 18.00, category: "produtos", type: "product", image: "gel-medio.jpg", description: "Gel para fixação forte. Segura o penteado o dia todo." },
+    { id: 14, name: "Máquina de Cortar Cabelo", price: 89.00, category: "produtos", type: "product", image: "maquina-de-cortar-cabelo.jpg", description: "Máquina profissional para cortes em casa." },
+    { id: 15, name: "Corte + Sobrancelha", price: 35.00, category: "combos", type: "service", image: "corte-mais-barba.jpg", description: "Corte de cabelo + aparação de sobrancelhas." },
+    { id: 16, name: "Pomada Modeladora 100ml", price: 22.00, category: "produtos", type: "product", image: "pasta-modeladora.jpg", description: "Pomada para modelar cabelos. Acabamento natural." },
+    { id: 17, name: "Barba + Bigode", price: 25.00, category: "barba", type: "service", image: "barba-bigode.jpg", description: "Combo barba completa + modelagem do bigode." },
+    { id: 18, name: "Tesoura Profissional", price: 45.00, category: "produtos", type: "product", image: "tesoura-profissional.jpg", description: "Tesoura de corte profissional. Afiada e precisa." },
+    { id: 19, name: "Corte Degradê", price: 35.00, category: "cortes", type: "service", image: "corte-moderno.jpg", description: "Corte degradê moderno. Tendência atual." },
+    { id: 20, name: "Kit Higiene Pessoal", price: 55.00, category: "combos", type: "product", image: "kit-higiene-pessoal.jpg", description: "Kit com shampoo, condicionador e óleo para barba." }
 ];
 
 let cart = [];
@@ -238,8 +238,18 @@ function loadCartFromStorage() {
     }
     if (saved) {
         try {
-            cart = JSON.parse(saved);
+            const parsedCart = JSON.parse(saved);
+            // Sincronizar com o catálogo para garantir que propriedades novas (como 'type') existam
+            cart = parsedCart.map(savedItem => {
+                const product = products.find(p => p.id === savedItem.id);
+                if (product) {
+                    return { ...product, quantity: savedItem.quantity };
+                }
+                return null;
+            }).filter(item => item !== null);
+
             updateUI();
+            saveCartToStorage();
         } catch (error) {
             console.error('Erro ao carregar carrinho:', error);
             cart = [];
@@ -268,7 +278,7 @@ function renderProducts(items) {
                     <button onclick="adjustQty(${product.id}, 1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold text-zinc-900 hover:bg-gray-100 transition-colors">+</button>
                 </div>
 
-                <button onclick="${product.category === 'produtos' ? `addToCart(${product.id})` : `showScheduleModal(${product.id})`}" class="w-full bg-zinc-900 text-white py-2.5 rounded-xl text-[11px] font-bold uppercase hover:bg-yellow-400 hover:text-black transition-all active:scale-95 shadow-sm">${product.category === 'produtos' ? translations[currentLanguage].addButton : translations[currentLanguage].scheduleButton}</button>
+                <button onclick="addToCart(${product.id})" class="w-full bg-zinc-900 text-white py-2.5 rounded-xl text-[11px] font-bold uppercase hover:bg-yellow-400 hover:text-black transition-all active:scale-95 shadow-sm">${translations[currentLanguage].addButton}</button>
             </div>
         </div>
     `).join('');
@@ -324,6 +334,7 @@ function addToCart(id, customQty = null) {
 }
 
 function updateUI() {
+    const t = translations[currentLanguage];
     document.getElementById('cart-count').innerText = cart.reduce((s, i) => s + i.quantity, 0);
     const total = cart.reduce((s, i) => s + (i.price * i.quantity), 0);
     document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
@@ -337,22 +348,22 @@ function updateUI() {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </div>
-                <p class="text-xs uppercase font-bold tracking-widest">Carrinho vazio</p>
+                <p class="text-xs uppercase font-bold tracking-widest">${t.emptyCart}</p>
             </div>
         `;
         return;
     }
 
     // Separar serviços e produtos
-    const services = cart.filter(item => ['cortes', 'barba', 'combos'].includes(item.category));
-    const products = cart.filter(item => item.category === 'produtos');
+    const services = cart.filter(item => item.type === 'service');
+    const products = cart.filter(item => item.type === 'product');
 
     let cartHTML = '';
 
     // Serviços (Cortes, Barba, Combos)
     if (services.length > 0) {
         cartHTML += `<div class="mb-4">
-            <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">🪒 Serviços</h4>`;
+            <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">${t.servicesHeader}</h4>`;
         services.forEach(item => {
             cartHTML += `
                 <div class="flex items-center gap-3 bg-blue-50 p-3 rounded-xl border border-blue-100 shadow-sm relative animate-in fade-in slide-in-from-right-4 duration-300 mb-2">
@@ -382,7 +393,7 @@ function updateUI() {
     // Produtos
     if (products.length > 0) {
         cartHTML += `<div class="mb-4">
-            <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">🛍️ Produtos</h4>`;
+            <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">${t.productsHeader}</h4>`;
         products.forEach(item => {
             cartHTML += `
                 <div class="flex items-center gap-3 bg-green-50 p-3 rounded-xl border border-green-100 shadow-sm relative animate-in fade-in slide-in-from-right-4 duration-300 mb-2">
@@ -439,7 +450,9 @@ function filterCategory(cat) {
 }
 
 function searchProducts() {
-    const query = document.getElementById('search-input').value.toLowerCase();
+    const desktopInput = document.getElementById('search-input');
+    const mobileInput = document.getElementById('mobile-search-input');
+    const query = (desktopInput?.value || mobileInput?.value || '').toLowerCase();
     const filtered = products.filter(p => p.name.toLowerCase().includes(query));
     renderProducts(filtered);
 }
@@ -464,6 +477,9 @@ const translations = {
             produtos: 'Produtos',
             combos: 'Combos'
         },
+        deliveryBanner: '✂️ Agendamento rápido em minutos!',
+        servicesHeader: '🪒 Serviços',
+        productsHeader: '🛍️ Produtos',
         cartTitle: 'Meu Carrinho',
         close: 'Fechar',
         emptyCart: 'Carrinho vazio',
@@ -479,7 +495,7 @@ const translations = {
             location: 'Localização',
             instagram: 'Instagram'
         },
-        categoriesTitle: 'Categorias',
+        categoriesTitle: 'MENU',
         scheduleModal: {
             title: 'Agendar Serviço',
             name: 'Nome Completo *',
@@ -508,6 +524,9 @@ const translations = {
             produtos: 'Products',
             combos: 'Combos'
         },
+        deliveryBanner: '✂️ Quick scheduling in minutes!',
+        servicesHeader: '🪒 Services',
+        productsHeader: '🛍️ Products',
         cartTitle: 'My Cart',
         close: 'Close',
         emptyCart: 'Empty cart',
@@ -523,7 +542,7 @@ const translations = {
             location: 'Location',
             instagram: 'Instagram'
         },
-        categoriesTitle: 'Categories',
+        categoriesTitle: 'MENU',
         scheduleModal: {
             title: 'Schedule Service',
             name: 'Full Name *',
@@ -594,7 +613,12 @@ function updateLanguage() {
         const match = onclick.match(/filterCategory\('([^']+)'\)/);
         if (match) {
             const cat = match[1];
-            btn.textContent = t.categories[cat] || cat;
+            const textSpan = btn.querySelector('span:first-child');
+            if (textSpan) {
+                textSpan.textContent = t.categories[cat] || cat;
+            } else {
+                btn.textContent = t.categories[cat] || cat;
+            }
         }
     });
 
@@ -631,8 +655,6 @@ function updateLanguage() {
     addButtons.forEach(btn => {
         if (btn.textContent.toLowerCase() === 'adicionar' || btn.textContent.toLowerCase() === 'add') {
             btn.textContent = t.addButton;
-        } else if (btn.textContent.toLowerCase() === 'agendar' || btn.textContent.toLowerCase() === 'schedule') {
-            btn.textContent = t.scheduleButton;
         }
     });
 
@@ -653,7 +675,15 @@ function updateLanguage() {
 
     // Age warning removed as we have cookie verification
 
-    // Removed to allow HTML copyright text
+    // Copyright
+    const copyright = document.querySelector('footer p.text-black');
+    if (copyright) {
+        copyright.innerHTML = t.copyright;
+    }
+
+    // Delivery Banner
+    const deliveryText = document.querySelector('.delivery-text-container');
+    if (deliveryText) deliveryText.textContent = t.deliveryBanner;
 
     // Cookie banner
     const cookieText = document.querySelector('#cookie-banner p');
@@ -680,14 +710,7 @@ function updateLanguage() {
     // Atualizar botão do modal de produto se estiver aberto
     const modalBtn = document.querySelector('#product-modal button:last-child');
     if (modalBtn && currentModalProductId) {
-        const product = products.find(p => p.id === currentModalProductId);
-        if (product) {
-            if (product.category === 'produtos') {
-                modalBtn.textContent = t.addToCart;
-            } else {
-                modalBtn.textContent = t.scheduleService;
-            }
-        }
+        modalBtn.textContent = t.addToCart;
     }
 
     // Atualizar título e botão do menu mobile
@@ -699,62 +722,6 @@ function updateLanguage() {
     const mobileCloseBtn = document.querySelector('#mobile-menu button[onclick*="toggleMobileMenu"]');
     if (mobileCloseBtn) {
         mobileCloseBtn.textContent = t.close;
-    }
-
-    // Atualizar modal de agendamento
-    const scheduleTitle = document.querySelector('#schedule-modal h3');
-    if (scheduleTitle) {
-        scheduleTitle.textContent = t.scheduleModal.title;
-    }
-
-    const nameLabel = document.querySelector('#schedule-modal label[for="schedule-name"]');
-    if (nameLabel) {
-        nameLabel.textContent = t.scheduleModal.name;
-    }
-
-    const phoneLabel = document.querySelector('#schedule-modal label[for="schedule-phone"]');
-    if (phoneLabel) {
-        phoneLabel.textContent = t.scheduleModal.phone;
-    }
-
-    const serviceLabel = document.querySelector('#schedule-modal label[for="schedule-service"]');
-    if (serviceLabel) {
-        serviceLabel.textContent = t.scheduleModal.service;
-    }
-
-    const dateLabel = document.querySelector('#schedule-modal label[for="schedule-date"]');
-    if (dateLabel) {
-        dateLabel.textContent = t.scheduleModal.date;
-    }
-
-    const timeLabel = document.querySelector('#schedule-modal label[for="schedule-time"]');
-    if (timeLabel) {
-        timeLabel.textContent = t.scheduleModal.time;
-    }
-
-    const notesLabel = document.querySelector('#schedule-modal label[for="schedule-notes"]');
-    if (notesLabel) {
-        notesLabel.textContent = t.scheduleModal.notes;
-    }
-
-    const notesTextarea = document.getElementById('schedule-notes');
-    if (notesTextarea) {
-        notesTextarea.placeholder = t.scheduleModal.notesPlaceholder;
-    }
-
-    const scheduleBtn = document.querySelector('#schedule-modal button[type="submit"]');
-    if (scheduleBtn) {
-        scheduleBtn.textContent = t.scheduleModal.button;
-    }
-
-    const serviceSelect = document.getElementById('schedule-service');
-    if (serviceSelect && serviceSelect.options[0]) {
-        serviceSelect.options[0].text = t.scheduleModal.select;
-    }
-
-    const timeSelect = document.getElementById('schedule-time');
-    if (timeSelect && timeSelect.options[0]) {
-        timeSelect.options[0].text = t.scheduleModal.select;
     }
 }
 
@@ -770,6 +737,7 @@ window.onload = () => {
 let currentModalProductId = null;
 
 function showProductDetail(id) {
+    const t = translations[currentLanguage];
     const product = products.find(p => p.id === id);
     if (!product) return;
 
@@ -779,17 +747,12 @@ function showProductDetail(id) {
     document.getElementById('modal-name').textContent = product.name;
     document.getElementById('modal-description').textContent = product.description;
     document.getElementById('modal-price').textContent = `R$ ${product.price.toFixed(2).replace('.', ',')}`;
-    document.getElementById('modal-category').textContent = product.category.toUpperCase();
+    document.getElementById('modal-category').textContent = (t.categories[product.category] || product.category).toUpperCase();
     document.getElementById('modal-qty').value = 1;
 
     const modalBtn = document.querySelector('#product-modal button:last-child');
-    if (product.category === 'produtos') {
-        modalBtn.textContent = translations[currentLanguage].addToCart;
-        modalBtn.onclick = () => addToCartFromModal();
-    } else {
-        modalBtn.textContent = translations[currentLanguage].scheduleService;
-        modalBtn.onclick = () => { closeProductModal(); showScheduleModal(currentModalProductId); };
-    }
+    modalBtn.textContent = translations[currentLanguage].addToCart;
+    modalBtn.onclick = () => addToCartFromModal();
 
     document.getElementById('product-modal').classList.remove('hidden');
 }
@@ -812,48 +775,6 @@ function addToCartFromModal() {
     const qty = parseInt(document.getElementById('modal-qty').value);
     addToCart(currentModalProductId, qty);
     closeProductModal();
-}
-
-// Funções do modal de agendamento
-function showScheduleModal(serviceId = null) {
-    document.getElementById('schedule-modal').classList.remove('hidden');
-    if (serviceId) {
-        const product = products.find(p => p.id === serviceId);
-        if (product) {
-            document.getElementById('schedule-service').value = product.name;
-        }
-    }
-}
-
-function closeScheduleModal() {
-    document.getElementById('schedule-modal').classList.add('hidden');
-}
-
-function handleScheduleSubmit(event) {
-    event.preventDefault();
-
-    const name = document.getElementById('schedule-name').value;
-    const phone = document.getElementById('schedule-phone').value;
-    const service = document.getElementById('schedule-service').value;
-    const date = document.getElementById('schedule-date').value;
-    const time = document.getElementById('schedule-time').value;
-    const notes = document.getElementById('schedule-notes').value;
-
-    const msg = `Olá! Gostaria de agendar um serviço:\n\n` +
-                `Nome: ${name}\n` +
-                `Telefone: ${phone}\n` +
-                `Serviço: ${service}\n` +
-                `Data: ${date}\n` +
-                `Horário: ${time}\n` +
-                (notes ? `Observações: ${notes}\n\n` : '\n') +
-                `Aguardo confirmação!`;
-
-    // Clear form
-    document.getElementById('schedule-form').reset();
-    closeScheduleModal();
-
-    // Open WhatsApp
-    window.open(`https://wa.me/5511991854713?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 // Funções de gerenciamento do banner de cookies
@@ -921,10 +842,4 @@ function initializeCookieBanner() {
 document.addEventListener('DOMContentLoaded', () => {
     // Inicializar banner de cookies
     initializeCookieBanner();
-
-    // Outros event listeners existentes
-    const scheduleForm = document.getElementById('schedule-form');
-    if (scheduleForm) {
-        scheduleForm.addEventListener('submit', handleScheduleSubmit);
-    }
 });

@@ -22,7 +22,15 @@
     <!-- Navegação Principal -->
     <nav class="bg-zinc-900 shadow-xl sticky top-[36px] sm:top-[42px] z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+            <div class="flex items-center gap-4">
+                <!-- Menu Hambúrguer (Esquerda) -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-white hover:text-yellow-400 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                </button>
+
+                <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
                 <div class="bg-yellow-400 p-1.5 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l.707.707A1 1 0 0012.414 11H13a4 4 0 014 4v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1a4 4 0 014-4h.586a1 1 0 00.707-.293l.707-.707A1 1 0 019 10zM3 3a1 1 0 011-1h6a1 1 0 011 1v1a1 1 0 01-1 1H5a1 1 0 01-1-1V3zM3 9a1 1 0 011-1h6a1 1 0 011 1v1a1 1 0 01-1 1H5a1 1 0 01-1-1V9z" />
@@ -32,21 +40,9 @@
                     Sua <span class="text-yellow-400">Barbearia</span>
                 </h1>
             </div>
+            </div>
 
             <div class="flex items-center gap-3">
-                <!-- Menu Hambúrguer para Mobile -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-
-                <button onclick="showScheduleModal()" class="p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </button>
-
                 <button onclick="toggleCart()" class="relative p-2.5 bg-zinc-800 rounded-full hover:bg-zinc-700 transition active:scale-90">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -76,21 +72,47 @@
     </nav>
 
     <!-- Menu Mobile Sidebar -->
-    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-full sm:max-w-sm bg-zinc-900 shadow-2xl transform -translate-x-full z-[70] flex flex-col md:hidden">
-        <div class="p-5 bg-zinc-900 text-white flex justify-between items-center border-b border-zinc-700">
-            <h3 class="font-brand font-bold uppercase">Categorias</h3>
-            <button onclick="toggleMobileMenu()" class="text-yellow-400 font-bold uppercase text-xs">Fechar</button>
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-[85%] max-w-sm bg-white shadow-2xl transform -translate-x-full z-[70] flex flex-col md:hidden font-sans transition-transform duration-300 ease-in-out">
+        <div class="p-6 bg-zinc-900 flex justify-between items-center shadow-md">
+            <h3 class="font-brand font-bold uppercase text-white text-xl tracking-widest">MENU</h3>
+            <button onclick="toggleMobileMenu()" class="text-yellow-400 hover:text-yellow-300 font-bold uppercase text-xs tracking-widest transition-colors border border-yellow-400 rounded px-3 py-1">Fechar</button>
         </div>
-        <div class="flex-grow overflow-y-auto p-4 space-y-4 bg-zinc-800">
-            <button onclick="filterCategory('todos'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Todos</button>
-            <button onclick="filterCategory('cortes'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Cortes</button>
-            <button onclick="filterCategory('barba'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Barba</button>
-            <button onclick="filterCategory('produtos'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Produtos</button>
-            <button onclick="filterCategory('combos'); toggleMobileMenu();" class="block w-full text-left text-gray-400 hover:text-yellow-400 transition py-3 px-4 rounded-lg bg-zinc-700 hover:bg-zinc-600 uppercase font-bold text-sm">Combos</button>
+        
+        <!-- Barra de Busca Mobile -->
+        <div class="p-5 border-b border-gray-100 bg-white">
+            <div class="relative">
+                 <input type="text" id="mobile-search-input" onkeyup="searchProducts()" placeholder="O que você procura hoje?" class="w-full bg-gray-50 text-zinc-900 border border-gray-200 rounded-full px-4 py-3 pl-10 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-transparent transition-all text-sm placeholder-gray-400 shadow-sm">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 absolute left-3 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="flex-grow overflow-y-auto p-5 space-y-3 bg-white">
+            <button onclick="filterCategory('todos'); toggleMobileMenu();" class="group flex items-center justify-between w-full text-left text-zinc-800 hover:text-black transition py-3 px-4 rounded-xl font-bold text-sm border border-gray-100 hover:border-zinc-900 hover:bg-gray-50">
+                <span>Todos</span>
+                <span class="text-gray-300 group-hover:text-zinc-900 transition-colors">→</span>
+            </button>
+            <button onclick="filterCategory('cortes'); toggleMobileMenu();" class="group flex items-center justify-between w-full text-left text-zinc-800 hover:text-black transition py-3 px-4 rounded-xl font-bold text-sm border border-gray-100 hover:border-zinc-900 hover:bg-gray-50">
+                <span>Cortes</span>
+                <span class="text-gray-300 group-hover:text-zinc-900 transition-colors">→</span>
+            </button>
+            <button onclick="filterCategory('barba'); toggleMobileMenu();" class="group flex items-center justify-between w-full text-left text-zinc-800 hover:text-black transition py-3 px-4 rounded-xl font-bold text-sm border border-gray-100 hover:border-zinc-900 hover:bg-gray-50">
+                <span>Barba</span>
+                <span class="text-gray-300 group-hover:text-zinc-900 transition-colors">→</span>
+            </button>
+            <button onclick="filterCategory('produtos'); toggleMobileMenu();" class="group flex items-center justify-between w-full text-left text-zinc-800 hover:text-black transition py-3 px-4 rounded-xl font-bold text-sm border border-gray-100 hover:border-zinc-900 hover:bg-gray-50">
+                <span>Produtos</span>
+                <span class="text-gray-300 group-hover:text-zinc-900 transition-colors">→</span>
+            </button>
+            <button onclick="filterCategory('combos'); toggleMobileMenu();" class="group flex items-center justify-between w-full text-left text-zinc-800 hover:text-black transition py-3 px-4 rounded-xl font-bold text-sm border border-gray-100 hover:border-zinc-900 hover:bg-gray-50">
+                <span>Combos</span>
+                <span class="text-gray-300 group-hover:text-zinc-900 transition-colors">→</span>
+            </button>
         </div>
     </div>
 
-    <div id="mobile-menu-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 hidden z-[65] backdrop-blur-sm md:hidden"></div>
+    <div id="mobile-menu-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 hidden z-[65] backdrop-blur-md md:hidden"></div>
 
     <!-- Hero Section -->
     <header class="bg-zinc-900 pt-6 pb-12 sm:py-16 relative overflow-hidden">
@@ -200,79 +222,6 @@
                 </div>
 
                 <button onclick="addToCartFromModal()" class="w-full bg-zinc-900 text-white py-4 rounded-xl font-bold uppercase hover:bg-yellow-400 hover:text-black transition-all active:scale-95 shadow-lg">Adicionar ao Carrinho</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Agendamento -->
-    <div id="schedule-modal" class="fixed inset-0 bg-black/60 hidden z-[70] backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-brand font-bold text-zinc-900">Agendar Serviço</h3>
-                    <button onclick="closeScheduleModal()" class="text-gray-400 hover:text-gray-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <form id="schedule-form" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Nome Completo *</label>
-                        <input type="text" id="schedule-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Telefone *</label>
-                        <input type="tel" id="schedule-phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Serviço *</label>
-                        <select id="schedule-service" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
-                            <option value="">Selecione...</option>
-                            <option value="Corte Masculino Clássico">Corte Masculino Clássico</option>
-                            <option value="Barba Completa">Barba Completa</option>
-                            <option value="Corte + Barba">Corte + Barba</option>
-                            <option value="Corte Moderno">Corte Moderno</option>
-                            <option value="Bigode">Bigode</option>
-                            <option value="Kit Barbearia Completo">Kit Barbearia Completo</option>
-                            <option value="Corte Militar">Corte Militar</option>
-                            <option value="Sobrancelha">Sobrancelha</option>
-                            <option value="Corte + Sobrancelha">Corte + Sobrancelha</option>
-                            <option value="Barba + Bigode">Barba + Bigode</option>
-                            <option value="Corte Degradê">Corte Degradê</option>
-                            <option value="Kit Higiene Pessoal">Kit Higiene Pessoal</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Data *</label>
-                        <input type="date" id="schedule-date" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Horário *</label>
-                        <select id="schedule-time" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none">
-                            <option value="">Selecione...</option>
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Observações</label>
-                        <textarea id="schedule-notes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none" placeholder="Instruções especiais..."></textarea>
-                    </div>
-
-                    <button type="submit" class="w-full bg-zinc-900 text-white py-4 rounded-xl font-bold uppercase hover:bg-yellow-400 hover:text-black transition-all active:scale-95 shadow-lg">Agendar no WhatsApp</button>
-                </form>
             </div>
         </div>
     </div>
