@@ -596,9 +596,16 @@ function handleCheckout(event) {
     if (services.length > 0) {
         const serviceDate = document.getElementById('service-date')?.value;
         const serviceTime = document.getElementById('service-time')?.value;
+        const payment = document.getElementById('payment-method').value;
 
         if (!serviceDate || !serviceTime) {
             alert('Por favor, selecione a data e o horário do agendamento.');
+            return;
+        }
+
+        // Validação do pagamento para serviços
+        if (!payment) {
+            alert(t.fillFields);
             return;
         }
 
@@ -623,6 +630,7 @@ function handleCheckout(event) {
 
         msg += `Data: ${serviceDate}\n`; // Mantendo formato YYYY-MM-DD conforme pedido
         msg += `Horário: ${serviceTime}\n`;
+        msg += `Pagamento: ${payment}\n`;
 
         if (products.length > 0) {
             msg += `*PRODUTOS:*\n`;
@@ -789,6 +797,7 @@ function detectOrderType() {
 
     // Elementos do formulário
     const deliveryMethodSelect = document.getElementById('delivery-method');
+    const paymentMethodSelect = document.getElementById('payment-method');
     const deliveryMethodField = deliveryMethodSelect.parentElement;
     const addressFields = document.getElementById('address-fields');
     const paymentMethodField = document.getElementById('payment-method').parentElement;
@@ -797,28 +806,32 @@ function detectOrderType() {
     if (services.length > 0) {
         // Forçar retirada e ocultar opções de entrega/endereço
         deliveryMethodSelect.value = 'retirar';
-        deliveryMethodField.style.display = 'none';
-        addressFields.style.display = 'none';
+        // Atualizar campos de endereço para remover obrigatoriedade (required)
+        toggleAddressFields();
         
-        // Atualizar resumo para remover frete visualmente se necessário
-        currentShippingCost = 0;
-        renderOrderSummary();
+        deliveryMethodField.style.display = 'none';
+        // Remover obrigatoriedade de campos ocultos para evitar erro no submit
+        deliveryMethodSelect.required = false;
 
         if (isServicesOnly) {
-            paymentMethodField.style.display = 'none';
+            paymentMethodField.style.display = 'block'; // Exibir sempre
+            paymentMethodSelect.required = true; // Sempre obrigatório
             const notesTextarea = document.getElementById('customer-notes');
             notesTextarea.placeholder = 'Preferências de horário, estilo desejado, etc...';
             const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
             submitBtn.textContent = t.scheduleWhatsApp;
         } else {
             paymentMethodField.style.display = 'block';
+            paymentMethodSelect.required = true;
             const submitBtn = document.querySelector('#checkout-form button[type="submit"]');
             submitBtn.textContent = t.finalizeOrder;
         }
     } else {
         // Apenas produtos: mostrar opções de entrega
         deliveryMethodField.style.display = 'block';
+        deliveryMethodSelect.required = true;
         paymentMethodField.style.display = 'block';
+        paymentMethodSelect.required = true;
         toggleAddressFields(); // Ajustar campos de endereço baseado na seleção atual
     }
 
