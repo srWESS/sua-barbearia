@@ -25,7 +25,7 @@ sua-barbearia/
 
 - **Catálogo de Produtos**: Cortes, barbas, produtos masculinos
 - **Carrinho de Compras**: Adicionar/remover itens
-- **Agendamento**:选择日期和时间预约服务
+- **Agendamento**: Seleção de data e horário para serviços
 - **Checkout**: Formulário com cálculo de frete
 - **Integração WhatsApp**: Envio de pedidos via WhatsApp
 - **Banner de Cookies**: Conformidade LGPD
