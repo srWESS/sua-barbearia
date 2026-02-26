@@ -1,4 +1,13 @@
-    /**
+/**
+ * Função utilitária para gerar caminhos de imagens
+ * @param {string} filename - Nome do arquivo de imagem
+ * @returns {string} Caminho completo para a imagem
+ */
+function imgPath(filename) {
+    return '../images/' + filename;
+}
+
+/**
  * CookieManager - Sistema robusto de gerenciamento de cookies
  * Seguindo boas práticas de programação e conformidade LGPD
  */
@@ -10,42 +19,25 @@ class CookieManager {
         this.marketingCookies = ['analytics', 'marketing'];
     }
 
-    /**
-     * Define um cookie com validação e sanitização
-     * @param {string} name - Nome do cookie
-     * @param {string} value - Valor do cookie
-     * @param {number} days - Dias para expiração (opcional)
-     * @param {boolean} sessionOnly - Se deve ser cookie de sessão
-     * @param {boolean} httpOnly - Se deve ser HttpOnly (não implementável via JS)
-     * @param {boolean} secure - Se deve ser seguro (HTTPS)
-     */
     setCookie(name, value, days = null, sessionOnly = false, httpOnly = false, secure = false) {
         try {
-            // Validação de entrada
             if (!name || typeof name !== 'string') {
                 throw new Error('Nome do cookie inválido');
             }
 
-            // Sanitização do valor
             const sanitizedValue = this.sanitizeValue(value);
-
             let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(sanitizedValue)}; path=/; SameSite=Lax`;
 
-            // Expiração
             if (sessionOnly) {
-                // Cookie de sessão - expira ao fechar navegador
             } else if (days && typeof days === 'number' && days > 0) {
                 const expiryDate = new Date();
                 expiryDate.setTime(expiryDate.getTime() + (days * 24 * 60 * 60 * 1000));
                 cookieString += `; expires=${expiryDate.toUTCString()}`;
             }
 
-            // Segurança
             if (secure && window.location.protocol === 'https:') {
                 cookieString += '; Secure';
             }
-
-            // Nota: HttpOnly não pode ser definido via JavaScript por segurança
 
             document.cookie = cookieString;
             return true;
@@ -55,11 +47,6 @@ class CookieManager {
         }
     }
 
-    /**
-     * Obtém o valor de um cookie
-     * @param {string} name - Nome do cookie
-     * @returns {string|null} Valor do cookie ou null se não encontrado
-     */
     getCookie(name) {
         try {
             if (!name || typeof name !== 'string') {
@@ -83,83 +70,49 @@ class CookieManager {
         }
     }
 
-    /**
-     * Remove um cookie
-     * @param {string} name - Nome do cookie
-     */
     deleteCookie(name) {
         try {
             if (!name || typeof name !== 'string') {
                 return;
             }
 
-            // Remove definindo data de expiração no passado
             document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax`;
         } catch (error) {
             console.error('Erro ao remover cookie:', error);
         }
     }
 
-    /**
-     * Verifica se um tipo de cookie pode ser usado
-     * @param {string} cookieName - Nome do cookie
-     * @returns {boolean} Se o cookie pode ser usado
-     */
     canUseCookie(cookieName) {
-        // Cookies essenciais sempre permitidos
         if (this.essentialCookies.includes(cookieName)) {
             return true;
         }
-
-        // Outros cookies só com consentimento
         return this.consentGiven;
     }
 
-    /**
-     * Define consentimento para cookies
-     * @param {boolean} accepted - Se o usuário aceitou
-     */
     setConsent(accepted) {
         this.consentGiven = accepted;
         this.setCookie('cookieConsent', accepted ? 'accepted' : 'rejected', 365);
     }
 
-    /**
-     * Verifica se o consentimento foi dado
-     * @returns {boolean} Se o consentimento foi dado
-     */
     hasConsent() {
         return this.consentGiven;
     }
 
-    /**
-     * Remove todos os cookies não essenciais
-     */
     removeNonEssentialCookies() {
         [...this.preferenceCookies, ...this.marketingCookies].forEach(cookieName => {
             this.deleteCookie(cookieName);
         });
     }
 
-    /**
-     * Sanitiza o valor do cookie
-     * @param {*} value - Valor a ser sanitizado
-     * @returns {string} Valor sanitizado
-     */
     sanitizeValue(value) {
         if (value === null || value === undefined) {
             return '';
         }
 
-        // Converte para string e remove caracteres potencialmente perigosos
         const stringValue = String(value);
         return stringValue.replace(/[<>\"'&]/g, '');
     }
 
-    /**
-     * Lista todos os cookies atuais
-     * @returns {Object} Objeto com todos os cookies
-     */
     listAllCookies() {
         const cookies = {};
         const ca = document.cookie.split(';');
@@ -178,10 +131,6 @@ class CookieManager {
         return cookies;
     }
 
-    /**
-     * Verifica se os cookies estão habilitados no navegador
-     * @returns {boolean} Se os cookies estão habilitados
-     */
     areCookiesEnabled() {
         try {
             this.setCookie('testCookie', 'test', 1);
@@ -194,30 +143,29 @@ class CookieManager {
     }
 }
 
-// Instância global do gerenciador de cookies
 const cookieManager = new CookieManager();
 
 const products = [
-    { id: 1, name: "Corte Masculino Clássico", price: 25.00, category: "cortes", type: "service", image: "corte-tradicional.png", description: "Corte masculino tradicional com acabamento perfeito. Inclui lavagem e finalização." },
-    { id: 2, name: "Barba Completa", price: 20.00, category: "barba", type: "service", image: "barba-completa.jpg", description: "Aparação e modelagem da barba com toalha quente e produtos premium." },
-    { id: 3, name: "Corte + Barba", price: 40.00, category: "combos", type: "service", image: "corte-mais-barba.jpg", description: "Combo completo: corte de cabelo + barba. Melhor preço!" },
-    { id: 4, name: "Shampoo Profissional 250ml", price: 35.00, category: "produtos", type: "product", image: "shampoo-masculino.jpg", description: "Shampoo profissional para cabelos masculinos. Hidratação intensa." },
-    { id: 5, name: "Óleo para Barba 50ml", price: 28.00, category: "produtos", type: "product", image: "oleo-para-barba.jpg", description: "Óleo natural para barba. Hidrata e dá brilho aos pelos." },
-    { id: 6, name: "Corte Moderno", price: 30.00, category: "cortes", type: "service", image: "corte-moderno.jpg", description: "Corte moderno com técnicas atuais. Para quem quer estar na moda." },
-    { id: 7, name: "Bigode", price: 15.00, category: "barba", type: "service", image: "barba-bigode.jpg", description: "Aparação e modelagem do bigode. Detalhes perfeitos." },
-    { id: 8, name: "Kit Barbearia Completo", price: 120.00, category: "combos", type: "product", image: "kit-barbearia-completo.jpg", description: "Kit com tesoura, máquina, pentes e produtos. Para profissionais." },
-    { id: 9, name: "Condicionador 250ml", price: 32.00, category: "produtos", type: "product", image: "consicionador-masculino.jpg", description: "Condicionador premium para cabelos masculinos." },
-    { id: 10, name: "Creme para Barba 100ml", price: 25.00, category: "produtos", type: "product", image: "creme-para-barba.jpg", description: "Creme hidratante para barba. Previne irritações." },
-    { id: 11, name: "Corte Militar", price: 22.00, category: "cortes", type: "service", image: "corte-militar.jpg", description: "Corte curto e limpo. Ideal para dias quentes." },
-    { id: 12, name: "Sobrancelha", price: 12.00, category: "barba", type: "service", image: "sobrancelha.jpg", description: "Aparação das sobrancelhas. Define o olhar." },
-    { id: 13, name: "Gel Fixador 200ml", price: 18.00, category: "produtos", type: "product", image: "gel-medio.jpg", description: "Gel para fixação forte. Segura o penteado o dia todo." },
-    { id: 14, name: "Máquina de Cortar Cabelo", price: 89.00, category: "produtos", type: "product", image: "maquina-de-cortar-cabelo.jpg", description: "Máquina profissional para cortes em casa." },
-    { id: 15, name: "Corte + Sobrancelha", price: 35.00, category: "combos", type: "service", image: "corte-mais-barba.jpg", description: "Corte de cabelo + aparação de sobrancelhas." },
-    { id: 16, name: "Pomada Modeladora 100ml", price: 22.00, category: "produtos", type: "product", image: "pasta-modeladora.jpg", description: "Pomada para modelar cabelos. Acabamento natural." },
-    { id: 17, name: "Barba + Bigode", price: 25.00, category: "barba", type: "service", image: "barba-bigode.jpg", description: "Combo barba completa + modelagem do bigode." },
-    { id: 18, name: "Tesoura Profissional", price: 45.00, category: "produtos", type: "product", image: "tesoura-profissional.jpg", description: "Tesoura de corte profissional. Afiada e precisa." },
-    { id: 19, name: "Corte Degradê", price: 35.00, category: "cortes", type: "service", image: "corte-moderno.jpg", description: "Corte degradê moderno. Tendência atual." },
-    { id: 20, name: "Kit Higiene Pessoal", price: 55.00, category: "combos", type: "product", image: "kit-higiene-pessoal.jpg", description: "Kit com shampoo, condicionador e óleo para barba." }
+    { id: 1, name: "Corte Masculino Clássico", price: 25.00, category: "cortes", type: "service", image: imgPath("corte-tradicional.png"), description: "Corte masculino tradicional com acabamento perfeito. Inclui lavagem e finalização." },
+    { id: 2, name: "Barba Completa", price: 20.00, category: "barba", type: "service", image: imgPath("barba-completa.jpg"), description: "Aparação e modelagem da barba com toalha quente e produtos premium." },
+    { id: 3, name: "Corte + Barba", price: 40.00, category: "combos", type: "service", image: imgPath("corte-mais-barba.jpg"), description: "Combo completo: corte de cabelo + barba. Melhor preço!" },
+    { id: 4, name: "Shampoo Profissional 250ml", price: 35.00, category: "produtos", type: "product", image: imgPath("shampoo-masculino.jpg"), description: "Shampoo profissional para cabelos masculinos. Hidratação intensa." },
+    { id: 5, name: "Óleo para Barba 50ml", price: 28.00, category: "produtos", type: "product", image: imgPath("oleo-para-barba.jpg"), description: "Óleo natural para barba. Hidrata e dá brilho aos pelos." },
+    { id: 6, name: "Corte Moderno", price: 30.00, category: "cortes", type: "service", image: imgPath("corte-moderno.jpg"), description: "Corte moderno com técnicas atuais. Para quem quer estar na moda." },
+    { id: 7, name: "Bigode", price: 15.00, category: "barba", type: "service", image: imgPath("barba-bigode.jpg"), description: "Aparação e modelagem do bigode. Detalhes perfeitos." },
+    { id: 8, name: "Kit Barbearia Completo", price: 120.00, category: "combos", type: "product", image: imgPath("kit-barbearia-completo.jpg"), description: "Kit com tesoura, máquina, pentes e produtos. Para profissionais." },
+    { id: 9, name: "Condicionador 250ml", price: 32.00, category: "produtos", type: "product", image: imgPath("consicionador-masculino.jpg"), description: "Condicionador premium para cabelos masculinos." },
+    { id: 10, name: "Creme para Barba 100ml", price: 25.00, category: "produtos", type: "product", image: imgPath("creme-para-barba.jpg"), description: "Creme hidratante para barba. Previne irritações." },
+    { id: 11, name: "Corte Militar", price: 22.00, category: "cortes", type: "service", image: imgPath("corte-militar.jpg"), description: "Corte curto e limpo. Ideal para dias quentes." },
+    { id: 12, name: "Sobrancelha", price: 12.00, category: "barba", type: "service", image: imgPath("sobrancelha.jpg"), description: "Aparação das sobrancelhas. Define o olhar." },
+    { id: 13, name: "Gel Fixador 200ml", price: 18.00, category: "produtos", type: "product", image: imgPath("gel-medio.jpg"), description: "Gel para fixação forte. Segura o penteado o dia todo." },
+    { id: 14, name: "Máquina de Cortar Cabelo", price: 89.00, category: "produtos", type: "product", image: imgPath("maquina-de-cortar-cabelo.jpg"), description: "Máquina profissional para cortes em casa." },
+    { id: 15, name: "Corte + Sobrancelha", price: 35.00, category: "combos", type: "service", image: imgPath("corte-mais-barba.jpg"), description: "Corte de cabelo + aparação de sobrancelhas." },
+    { id: 16, name: "Pomada Modeladora 100ml", price: 22.00, category: "produtos", type: "product", image: imgPath("pasta-modeladora.jpg"), description: "Pomada para modelar cabelos. Acabamento natural." },
+    { id: 17, name: "Barba + Bigode", price: 25.00, category: "barba", type: "service", image: imgPath("barba-bigode.jpg"), description: "Combo barba completa + modelagem do bigode." },
+    { id: 18, name: "Tesoura Profissional", price: 45.00, category: "produtos", type: "product", image: imgPath("tesoura-profissional.jpg"), description: "Tesoura de corte profissional. Afiada e precisa." },
+    { id: 19, name: "Corte Degradê", price: 35.00, category: "cortes", type: "service", image: imgPath("corte-moderno.jpg"), description: "Corte degradê moderno. Tendência atual." },
+    { id: 20, name: "Kit Higiene Pessoal", price: 55.00, category: "combos", type: "product", image: imgPath("kit-higiene-pessoal.jpg"), description: "Kit com shampoo, condicionador e óleo para barba." }
 ];
 
 let cart = [];
@@ -229,7 +177,6 @@ function saveCartToStorage() {
 function loadCartFromStorage() {
     let saved = localStorage.getItem('cart');
     if (!saved) {
-        // Migrate from cookies if not in localStorage
         saved = cookieManager.getCookie('cart');
         if (saved) {
             localStorage.setItem('cart', saved);
@@ -239,7 +186,6 @@ function loadCartFromStorage() {
     if (saved) {
         try {
             const parsedCart = JSON.parse(saved);
-            // Sincronizar com o catálogo para garantir que propriedades novas (como 'type') existam
             cart = parsedCart.map(savedItem => {
                 const product = products.find(p => p.id === savedItem.id);
                 if (product) {
@@ -271,7 +217,6 @@ function renderProducts(items) {
                 <h4 class="font-bold text-sm text-gray-800 line-clamp-2 h-10 mb-1">${product.name}</h4>
                 <span class="block text-xl font-brand font-bold text-zinc-900 mb-3">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
 
-                <!-- SELETOR DE QUANTIDADE NO CARD -->
                 <div class="flex items-center justify-between bg-gray-50 rounded-xl p-1 mb-3 border border-gray-100">
                     <button onclick="adjustQty(${product.id}, -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm font-bold text-zinc-900 hover:bg-gray-100 transition-colors">-</button>
                     <input type="number" id="qty-${product.id}" value="1" min="1" class="w-10 bg-transparent text-center font-bold text-sm outline-none" readonly>
@@ -291,7 +236,6 @@ function adjustQty(id, delta) {
     input.value = val;
 }
 
-// Nova função para ajustar quantidade dentro do carrinho
 function adjustCartQty(id, delta) {
     const item = cart.find(i => i.id === id);
     if (item) {
@@ -354,13 +298,11 @@ function updateUI() {
         return;
     }
 
-    // Separar serviços e produtos
     const services = cart.filter(item => item.type === 'service');
     const products = cart.filter(item => item.type === 'product');
 
     let cartHTML = '';
 
-    // Serviços (Cortes, Barba, Combos)
     if (services.length > 0) {
         cartHTML += `<div class="mb-4">
             <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">${t.servicesHeader}</h4>`;
@@ -390,7 +332,6 @@ function updateUI() {
         cartHTML += `</div>`;
     }
 
-    // Produtos
     if (products.length > 0) {
         cartHTML += `<div class="mb-4">
             <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2 border-b border-gray-200 pb-1">${t.productsHeader}</h4>`;
@@ -459,12 +400,9 @@ function searchProducts() {
 
 function checkout() {
     if (cart.length === 0) return;
-
-    // Sempre ir para checkout, que lida com serviços, produtos ou ambos
-    window.location.href = 'checkout.html';
+    window.location.href = '../pages/checkout.html';
 }
 
-// Traduções
 const translations = {
     pt: {
         title: 'Cortes Perfeitos & Estilo Impecável!',
@@ -562,7 +500,6 @@ const translations = {
     }
 };
 
-// Preferências persistentes com localStorage
 let currentLanguage = localStorage.getItem('language') || 'pt';
 
 function setLanguage(lang) {
@@ -574,28 +511,23 @@ function setLanguage(lang) {
 function updateLanguage() {
     const t = translations[currentLanguage];
 
-    // Título da página (browser tab)
     document.title = t.title + ' - Sua Barbearia';
 
-    // Título principal
     const title = document.querySelector('h2');
     if (title) {
         title.textContent = t.title;
     }
 
-    // Placeholder da busca
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
         searchInput.placeholder = t.searchPlaceholder;
     }
 
-    // Título da categoria
     const categoryTitle = document.getElementById('category-title');
     if (categoryTitle) {
         categoryTitle.textContent = t.categoryTitle;
     }
 
-    // Botões de categoria desktop
     const desktopCategoryButtons = document.querySelectorAll('nav button[onclick*="filterCategory"]');
     desktopCategoryButtons.forEach(btn => {
         const onclick = btn.getAttribute('onclick');
@@ -606,7 +538,6 @@ function updateLanguage() {
         }
     });
 
-    // Botões de categoria mobile
     const mobileCategoryButtons = document.querySelectorAll('#mobile-menu button[onclick*="filterCategory"]');
     mobileCategoryButtons.forEach(btn => {
         const onclick = btn.getAttribute('onclick');
@@ -622,7 +553,6 @@ function updateLanguage() {
         }
     });
 
-    // Carrinho
     const cartTitle = document.querySelector('#cart-sidebar h3');
     if (cartTitle) {
         cartTitle.textContent = t.cartTitle;
@@ -648,9 +578,6 @@ function updateLanguage() {
         purchaseBtn.textContent = t.purchaseDetails;
     }
 
-
-
-    // Botões de adicionar produto
     const addButtons = document.querySelectorAll('.product-card button');
     addButtons.forEach(btn => {
         if (btn.textContent.toLowerCase() === 'adicionar' || btn.textContent.toLowerCase() === 'add') {
@@ -658,7 +585,6 @@ function updateLanguage() {
         }
     });
 
-    // Footer
     const contactTitle = document.querySelector('footer h3');
     if (contactTitle) {
         contactTitle.textContent = t.contact;
@@ -673,19 +599,14 @@ function updateLanguage() {
         }
     });
 
-    // Age warning removed as we have cookie verification
-
-    // Copyright
     const copyright = document.querySelector('footer p.text-black');
     if (copyright) {
         copyright.innerHTML = t.copyright;
     }
 
-    // Delivery Banner
     const deliveryText = document.querySelector('.delivery-text-container');
     if (deliveryText) deliveryText.textContent = t.deliveryBanner;
 
-    // Cookie banner
     const cookieText = document.querySelector('#cookie-banner p');
     if (cookieText) {
         cookieText.textContent = t.cookieText;
@@ -701,19 +622,16 @@ function updateLanguage() {
         rejectBtn.textContent = t.reject;
     }
 
-    // Botão de idioma
     const langBtn = document.getElementById('lang-text');
     if (langBtn) {
         langBtn.textContent = currentLanguage.toUpperCase();
     }
 
-    // Atualizar botão do modal de produto se estiver aberto
     const modalBtn = document.querySelector('#product-modal button:last-child');
     if (modalBtn && currentModalProductId) {
         modalBtn.textContent = t.addToCart;
     }
 
-    // Atualizar título e botão do menu mobile
     const mobileTitle = document.querySelector('#mobile-menu h3');
     if (mobileTitle) {
         mobileTitle.textContent = t.categoriesTitle;
@@ -725,15 +643,12 @@ function updateLanguage() {
     }
 }
 
-
-
 window.onload = () => {
     renderProducts(products);
     loadCartFromStorage();
     updateLanguage();
 };
 
-// Funções do modal de detalhes do produto
 let currentModalProductId = null;
 
 function showProductDetail(id) {
@@ -777,7 +692,6 @@ function addToCartFromModal() {
     closeProductModal();
 }
 
-// Funções de gerenciamento do banner de cookies
 function showCookieBanner() {
     const banner = document.getElementById('cookie-banner');
     if (banner && !cookieManager.hasConsent()) {
@@ -805,27 +719,21 @@ function rejectCookies() {
     console.log('Cookies rejeitados. Apenas cookies essenciais serão usados.');
 }
 
-// Inicialização do banner de cookies
 function initializeCookieBanner() {
-    // Verificar se cookies estão habilitados
     if (!cookieManager.areCookiesEnabled()) {
         console.warn('Cookies estão desabilitados no navegador. Algumas funcionalidades podem não funcionar corretamente.');
         return;
     }
 
-    // Mostrar banner se não houver consentimento
     if (!cookieManager.hasConsent()) {
-        // Pequeno delay para garantir que o DOM esteja carregado
         setTimeout(() => {
             showCookieBanner();
-            // Aceitar automaticamente após 5 segundos
             setTimeout(() => {
                 acceptCookies();
             }, 5000);
         }, 1000);
     }
 
-    // Adicionar event listeners aos botões
     const acceptBtn = document.getElementById('accept-cookies');
     const rejectBtn = document.getElementById('reject-cookies');
 
@@ -838,8 +746,6 @@ function initializeCookieBanner() {
     }
 }
 
-// Event listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar banner de cookies
     initializeCookieBanner();
 });
